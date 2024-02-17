@@ -46,12 +46,12 @@ public class UserServicesImpl implements UserServices {
     @Override
     public User getUser(String userId) {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFound("Resource not found ****"));
-        Rating[] listUser = restTemplate.getForObject("http://RATING-SERVICE/api/user/" + user.getUserId(), Rating[].class);
+        Rating[] listUser = restTemplate.getForObject("http://RATING-SERVICE/apiR/user/" + user.getUserId(), Rating[].class);
         logger.info("{}", listUser);
 
         List<Rating> ratings = Arrays.stream(listUser).toList();
         List<Rating> ratingList = ratings.stream().map(rating -> {
-           // ResponseEntity<Hotel> forEntity = restTemplate.getForEntity("http://localhost:8081/api/getid/"+rating.getHotelId(), Hotel.class);
+           // ResponseEntity<Hotel> forEntity = restTemplate.getForEntity("http://localhost:8081/apiH/getid/"+rating.getHotelId(), Hotel.class);
 
             Hotel hotel = hotelServices.gethotel(rating.getHotelId());
 

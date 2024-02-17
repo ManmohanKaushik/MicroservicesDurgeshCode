@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/apiH")
 public class HotelController {
     @Autowired
     private HotelService hotelService;
