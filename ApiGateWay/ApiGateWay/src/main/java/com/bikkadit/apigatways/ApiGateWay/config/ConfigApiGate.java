@@ -14,10 +14,11 @@ public class ConfigApiGate {
 
                 .route(p -> p.path("/apiU/**")
                         .uri("lb://USER-SERVICES"))
-                .route(p -> p.path("/apiH/**")
+                .route(p -> p.path("/apiH/**","/staff/**")
                         .uri("lb://HOTEL-SERVICE"))
                 .route(p -> p.path("/apiR/**")
                         .uri("lb://RATING-SERVICE")).build();
+        //"/staff/** is example of multiple url hits in Api gateway"
 
     }
 }
