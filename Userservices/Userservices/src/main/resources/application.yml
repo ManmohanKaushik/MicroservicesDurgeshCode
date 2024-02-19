@@ -1,9 +1,9 @@
 
 server:
   port: 8080
-
 spring:
-
+  application:
+    name: USER-SERVICES
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/micro_userservices
@@ -16,18 +16,19 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  application:
-    name: USER-SERVICES
+
+  config:
+     import: optional:configserver:http//http://localhost:8585
 
 
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      default-zone: http://localhost:8761/eureka
-  instance:
-      prefer-ip-address: true
+#eureka:
+  #client:
+   # fetch-registry: true
+    #register-with-eureka: true
+    #service-url:
+     # default-zone: http://localhost:8761/eureka
+  #instance:
+   #   prefer-ip-address: true
 
 
 
