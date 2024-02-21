@@ -3,6 +3,9 @@ package com.bikkadit.Userservices.controller;
 
 import com.bikkadit.Userservices.model.User;
 import com.bikkadit.Userservices.service.UserServices;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserServices userServices;
+
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/save")
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -29,8 +34,20 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
+    @CircuitBreaker(name = "ratingHotelBreaker",fallbackMethod = "ratingHotelFallBack")
     public ResponseEntity<User> getUser(@PathVariable String userId) {
+        logger.info("It is Get single User Handler: UserController ");
         User user = this.userServices.getUser(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+    
+    public ResponseEntity<User> ratingHotelFallBack(String userId, Exception ex){
+        logger.info("FallBack is executed because some service is down :  ",ex.getMessage());
+        User user = User.builder().userId("12345").email("dummy@gmail.com").about("This is dummy data some service is down")
+                .name("Dummy name").build();
+        return new ResponseEntity<User>(user,HttpStatus.OK);
+    }
+    
+    
+    
 }
