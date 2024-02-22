@@ -4,6 +4,7 @@ package com.bikkadit.Userservices.controller;
 import com.bikkadit.Userservices.model.User;
 import com.bikkadit.Userservices.service.UserServices;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,8 @@ public class UserController {
 
     @GetMapping("/user/{userId}")
     //@CircuitBreaker(name = "ratingHotelBreaker",fallbackMethod = "ratingHotelFallBack")
-    @Retry(name = "ratingHotelService", fallbackMethod = "ratingHotelFallBack")
+  //  @Retry(name = "ratingHotelService", fallbackMethod = "ratingHotelFallBack")
+    @RateLimiter(name = "userRateLimiter",fallbackMethod = "ratingHotelFallBack")
     public ResponseEntity<User> getUser(@PathVariable String userId) {
         logger.info("It is Get single User Handler: UserController ");
         logger.info("Retry count:{}",retryCount);
